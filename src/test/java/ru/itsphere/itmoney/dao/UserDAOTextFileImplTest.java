@@ -172,4 +172,19 @@ public class UserDAOTextFileImplTest {
         userDAO.deleteById(FIRST_USER_ID);
         userDAO.update(new User(LAST_USER_ID, ""));
     }
+
+    @Test
+    public void testFindUsersByQuerySuccessfully() {
+        List<User> users = userDAO.findUsersByQuery(USER_2_NAME);
+        User user = users.get(USER_2_ID);
+        String actual = user.getId() + SEPARATOR + user.getName();
+        String expected = USER_2_ID + SEPARATOR + USER_2_NAME;
+        Assert.assertEquals("findUsersBuQuery isn't working", expected, actual);
+    }
+
+    @Test
+    public void testFindUsersByQuerFail() {
+        List<User> users = userDAO.findUsersByQuery("");
+        Assert.assertNull("Users isn't null", users);
+    }
 }

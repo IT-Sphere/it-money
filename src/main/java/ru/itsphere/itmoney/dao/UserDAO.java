@@ -50,7 +50,8 @@ public interface UserDAO {
     void deleteById(int id);
 
     /**
-     * Возвращает количество пользователей
+     * @param query запроса
+     * @return Users которые соответсвуют запросу
      */
-    //int getCount();
+    List<User> findUsersByQuery(String query);
 }

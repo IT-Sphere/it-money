@@ -61,4 +61,12 @@ itMoneyModule.controller('AllUsersController', function ($scope, $location, User
             getUsersCount();
         });
     }
+
+    $scope.filterUsers = function () {
+        User.findUsersByQuery($scope.searchText, function (result) {
+            if (result) {
+                $scope.allUsers = angular.fromJson(result);
+            }
+        });
+    }
 });

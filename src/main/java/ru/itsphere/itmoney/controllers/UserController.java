@@ -37,6 +37,7 @@ public class UserController extends AbstractController {
         handlers.put(Actions.GET_ALL, getAll);
         handlers.put(Actions.DELETE_BY_ID, deleteById);
         handlers.put(Actions.GET_COUNT, getCount);
+        handlers.put(Actions.FIND_USERS_BY_QUERY,findUsersByQuery);
     }
 
     private Executable getById = (params) -> {
@@ -71,6 +72,15 @@ public class UserController extends AbstractController {
     private Executable getAll = (params) -> {
         try {
             return wrap(userService.getAll());
+        } catch (Exception e) {
+            throw new ApplicationException(String.format("Action getAll with params (%s) has thrown an exception", params), e);
+        }
+    };
+
+    private Executable findUsersByQuery = (params) -> {
+        try {
+            String query = String.valueOf(params.get("query"));
+            return wrap(userService.findUsersByQuery(query));
         } catch (Exception e) {
             throw new ApplicationException(String.format("Action getAll with params (%s) has thrown an exception", params), e);
         }

@@ -54,4 +54,10 @@ public interface UserService {
      * Возвращает количество пользователей
      */
     int getCount();
+
+    /**
+     * @param строка запроса
+     * @return Users которые соответсвуют запросу
+     */
+    List<User> findUsersByQuery(String query);
 }

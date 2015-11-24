@@ -7,6 +7,11 @@ http://it-channel.ru/
 -->
 <h1 class="text-center">All {{usersCount}} users</h1>
 </br>
+<div class="form-group searchText">
+    <label for="searchControl">User search:</label>
+    <input id="searchControl" ng-model="searchText" ng-change="filterUsers()" class="form-control" placeholder="Type search text">
+</div>
+</br>
 <table class="table table-hover">
     <thead>
         <th>Id</th>

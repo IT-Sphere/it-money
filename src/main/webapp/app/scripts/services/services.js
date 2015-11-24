@@ -29,6 +29,16 @@ services.factory('User', function ($http, Config, ErrorHandler) {
             });
         },
 
+        findUsersByQuery: function (query, successCallback) {
+            return $http.post(Config.appName, {
+                controller: "USER",
+                action: 'FIND_USERS_BY_QUERY',
+                params: {query: query}
+            })success(function (response) {
+                ErrorHandler(response, successCallback);
+            });
+        },
+
         save: function (user, successCallback) {
             return $http.post(Config.appName, {
                 controller: "USER",

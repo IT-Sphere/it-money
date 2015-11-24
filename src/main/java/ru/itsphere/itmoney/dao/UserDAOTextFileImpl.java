@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Реализация UserDAO для работы через текстовый файл
@@ -201,19 +203,30 @@ public class UserDAOTextFileImpl implements UserDAO {
         }
     }
 
- /*   @Override
-    public int getCount() {
+    @Override
+    public List<User> findUsersByQuery(String query) {
+        Pattern pattern = Pattern.compile(query);
+        Matcher matcher;
+        List<User> users = new ArrayList<>();
         try {
-            int result = 0;
-            ListIterator<String> iterator = getLinesOfFile().listIterator(1);
+            List<String> lines = getLinesOfFile();
+            ListIterator<String> iterator = lines.listIterator(1);
             while (iterator.hasNext()) {
-                result++;
+                String line = iterator.next();
+                matcher = pattern.matcher(line);
+                if (matcher.matches()) {
+                    users.add(convertToUser(line));
+                }
             }
-            return result;
+            if (!users.isEmpty()) {
+                return users;
+            }
+
         } catch (Exception e) {
-            throw new DAOException("Users aren't geting", e);
+            throw new DAOException(String.format("Find users bu query %s", query), e);
         }
-    }*/
+        return null;
+    }
 
     private List<String> deleteUserFromList(int id, List<String> lines) {
         int userIndexInFile = getUserIndexInLines(id, lines);
