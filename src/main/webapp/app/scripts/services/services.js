@@ -43,6 +43,15 @@ services.factory('User', function ($http, Config, ErrorHandler) {
             return $http.post(Config.appName, {controller: "USER", action: 'GET_ALL'}).success(function (response) {
                 ErrorHandler(response, successCallback);
             });
+        },
+
+        getCount: function (successCallback) {
+            return $http.post(Config.appName, {
+                controller: "USER",
+                action: 'GET_COUNT'
+            }).success(function (response) {
+                ErrorHandler(response, successCallback);
+            });
         }
     }
 });

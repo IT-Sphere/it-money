@@ -71,6 +71,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public int getCount() {
+        try {
+            return userDAO.getAll().size();
+        }
+        catch (Exception e) {
+            throw new ServiceException("Problem for getCount", e);
+        }
+    }
+
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
     }

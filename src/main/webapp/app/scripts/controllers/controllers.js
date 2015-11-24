@@ -34,6 +34,7 @@ itMoneyModule.controller('SaveUserController', function ($scope, $route, $locati
 
 itMoneyModule.controller('AllUsersController', function ($scope, $location, User) {
     $scope.allUsers = [];
+    $scope.usersCount = 0;
 
     function getAllUsers() {
         User.getAll(function (result) {
@@ -43,11 +44,21 @@ itMoneyModule.controller('AllUsersController', function ($scope, $location, User
         });
     }
 
+    function getUsersCount() {
+        User.getCount(function (result) {
+            if (result) {
+                $scope.usersCount = result;
+            }
+        });
+    }
+
     getAllUsers();
+    getUsersCount();
 
     $scope.delete = function (id) {
         User.delete(id, function (result) {
             getAllUsers();
+            getUsersCount();
         });
     }
 });

@@ -8,5 +8,5 @@ package ru.itsphere.itmoney.controllers;
  * @author Budnikov Aleksandr
  */
 public enum Actions {
-    GET_BY_ID, SAVE, GET_ALL, DELETE_BY_ID
+    GET_BY_ID, SAVE, GET_ALL, DELETE_BY_ID, GET_COUNT
 }

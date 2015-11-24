@@ -3,6 +3,7 @@ package ru.itsphere.itmoney.services;
 import ru.itsphere.itmoney.domain.User;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Этот интерфейс содержит все бизнес операции связанные с классом User
@@ -12,6 +13,7 @@ import java.util.List;
  * @author Budnikov Aleksandr
  */
 public interface UserService {
+
     /**
      * Возвращает пользователя по идентификатору
      *
@@ -47,4 +49,9 @@ public interface UserService {
      * @param id идентификатор
      */
     void deleteById(int id);
+
+    /**
+     * Возвращает количество пользователей
+     */
+    int getCount();
 }

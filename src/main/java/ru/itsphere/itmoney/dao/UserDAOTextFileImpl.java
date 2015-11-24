@@ -201,6 +201,20 @@ public class UserDAOTextFileImpl implements UserDAO {
         }
     }
 
+ /*   @Override
+    public int getCount() {
+        try {
+            int result = 0;
+            ListIterator<String> iterator = getLinesOfFile().listIterator(1);
+            while (iterator.hasNext()) {
+                result++;
+            }
+            return result;
+        } catch (Exception e) {
+            throw new DAOException("Users aren't geting", e);
+        }
+    }*/
+
     private List<String> deleteUserFromList(int id, List<String> lines) {
         int userIndexInFile = getUserIndexInLines(id, lines);
         lines.remove(userIndexInFile);

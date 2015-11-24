@@ -48,4 +48,9 @@ public interface UserDAO {
      * @param id идентификатор
      */
     void deleteById(int id);
+
+    /**
+     * Возвращает количество пользователей
+     */
+    //int getCount();
 }

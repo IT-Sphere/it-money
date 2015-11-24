@@ -36,6 +36,7 @@ public class UserController extends AbstractController {
         handlers.put(Actions.SAVE, save);
         handlers.put(Actions.GET_ALL, getAll);
         handlers.put(Actions.DELETE_BY_ID, deleteById);
+        handlers.put(Actions.GET_COUNT, getCount);
     }
 
     private Executable getById = (params) -> {
@@ -85,6 +86,14 @@ public class UserController extends AbstractController {
             return null;
         } catch (Exception e) {
             throw new ApplicationException(String.format("Action deleteBuId with params (%s) has thrown an exception", params), e);
+        }
+    };
+
+    private Executable getCount = (params) -> {
+        try {
+            return wrap(userService.getCount());
+        } catch (Exception e) {
+            throw new ApplicationException(String.format("Action getCount with params (%s) has thrown an exception", params), e);
         }
     };
 
