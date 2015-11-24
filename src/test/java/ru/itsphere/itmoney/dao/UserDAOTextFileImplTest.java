@@ -7,6 +7,7 @@ import ru.itsphere.itmoney.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Тесты для UserDAOTextFileImpl
@@ -35,17 +36,17 @@ public class UserDAOTextFileImplTest {
     @Before
     public void setUp() {
         lines = getLines();
-        userDAO = getUserDAOTextFile(lines);
+        userDAO = createUserDAO(lines);
     }
 
-    private UserDAO getUserDAOTextFile(List<String> lines) {
-        ReaderFactory readerFactory = new MockDataReaderFactory(lines);
-        WriterFactory writerFactory = new MockDataWriterFactory(lines);
-        UserDAOTextFileImpl userDAOTextFile = new UserDAOTextFileImpl();
-        userDAOTextFile.setReaderFactory(readerFactory);
-        userDAOTextFile.setWriterFactory(writerFactory);
-        return userDAOTextFile;
+    private UserDAO createUserDAO(List<String> lines) {
+        UserDAOTextFileImpl userDAO = new UserDAOTextFileImpl();
+        userDAO.setReaderFactory(new MockDataReaderFactory(lines));
+        userDAO.setWriterFactory(new MockDataWriterFactory(lines));
+        return userDAO;
     }
+
+
 
     private List<String> getLines() {
         List<String> lines = new ArrayList<>();
@@ -92,7 +93,7 @@ public class UserDAOTextFileImplTest {
         Assert.assertNotEquals(unexpected + "==" + actual, unexpected, actual);
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void testUpdateFail() {
         userDAO.update(new User(INEXISTENT_USER_ID, ""));
     }
@@ -126,7 +127,7 @@ public class UserDAOTextFileImplTest {
         Assert.assertEquals(expected + "!=" + actual, expected, actual);
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void testDeleteByIdFail() {
         userDAO.deleteById(INEXISTENT_USER_ID);
     }

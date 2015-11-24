@@ -8,15 +8,15 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <bean id="userService" class="ru.itsphere.itmoney.services.UserServiceImpl">
-        <property name="userDAO" ref="userDaoTextFile"/>
-    </bean>
+    <context:component-scan base-package="ru.itsphere.itmoney"/>
 
-    <bean id="userController" class="ru.itsphere.itmoney.controllers.UserController">
-        <property name="userService" ref="userService"/>
-    </bean>
+    <context:property-placeholder location="classpath:configurations.properties" />
 
     <bean id="controllerResolver" class="ru.itsphere.itmoney.servlets.ControllerResolver">
         <property name="controllers">
@@ -26,16 +26,4 @@
         </property>
     </bean>
 
-    <bean id="userDaoTextFile" class="ru.itsphere.itmoney.dao.UserDAOTextFileImpl">
-        <property name="readerFactory" ref="dataReaderFactory"/>
-        <property name="writerFactory" ref="dataWriterFactory"/>
-    </bean>
-
-    <bean id="dataWriterFactory" class="ru.itsphere.itmoney.dao.DataWriterFactory">
-        <constructor-arg value="store/users.txt"/>
-    </bean>
-
-    <bean id="dataReaderFactory" class="ru.itsphere.itmoney.dao.DataReaderFactory">
-        <constructor-arg value="store/users.txt"/>
-    </bean>
 </beans>

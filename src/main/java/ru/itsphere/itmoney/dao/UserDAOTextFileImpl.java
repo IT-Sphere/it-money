@@ -2,6 +2,8 @@ package ru.itsphere.itmoney.dao;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.itsphere.itmoney.domain.User;
 
 import java.io.BufferedReader;
@@ -18,6 +20,7 @@ import java.util.ListIterator;
  *
  * @author Budnikov Aleksandr
  */
+@Component
 public class UserDAOTextFileImpl implements UserDAO {
     /**
      * Подключили логгер к текущему классу
@@ -25,7 +28,10 @@ public class UserDAOTextFileImpl implements UserDAO {
     private static final Logger logger = LogManager.getLogger(UserDAOTextFileImpl.class);
 
     public static final String SEPARATOR = "/";
+
+    @Autowired
     private ReaderFactory readerFactory;
+    @Autowired
     private WriterFactory writerFactory;
 
     @Override
@@ -78,7 +84,7 @@ public class UserDAOTextFileImpl implements UserDAO {
                 writeUserToFileEndWithNewId(user, lastUserId + 1);
             }
         } catch (Exception e) {
-            // TODO add code
+            throw new DAOException("User isn't creating", e);
         }
     }
 
@@ -93,7 +99,7 @@ public class UserDAOTextFileImpl implements UserDAO {
             List<String> lines = replaceWithNewData(user, getLinesOfFile());
             updateFile(lines);
         } catch (Exception e) {
-            // TODO add code
+            throw new DAOException("User isn't update", e);
         }
     }
 
@@ -107,9 +113,8 @@ public class UserDAOTextFileImpl implements UserDAO {
             }
             return result;
         } catch (Exception e) {
-            // TODO add code
+            throw new DAOException("Users aren't geting", e);
         }
-        return null;
     }
 
     private User convertToUser(String userLine) {
@@ -192,7 +197,7 @@ public class UserDAOTextFileImpl implements UserDAO {
             List<String> lines = deleteUserFromList(id, getLinesOfFile());
             updateFile(lines);
         } catch (Exception e) {
-            // TODO add code
+            throw new DAOException(String.format("Deleting user by id %s", id), e);
         }
     }
 

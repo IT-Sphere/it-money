@@ -3,6 +3,8 @@ package ru.itsphere.itmoney.controllers;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import ru.itsphere.itmoney.domain.User;
 import ru.itsphere.itmoney.services.ServiceException;
 import ru.itsphere.itmoney.services.UserService;
@@ -17,12 +19,14 @@ import java.util.Map;
  *
  * @author Budnikov Aleksandr
  */
+@Controller
 public class UserController extends AbstractController {
     /**
      * Подключили логгер к текущему классу
      */
     private static final Logger logger = LogManager.getLogger(UserController.class);
 
+    @Autowired
     private UserService userService;
     private Map<Actions, Executable> handlers;
 
@@ -59,18 +63,16 @@ public class UserController extends AbstractController {
                 return wrap(newUser);
             }
         } catch (Exception e) {
-            // TODO add code
+            throw new ApplicationException(String.format("Action save with params (%s) has thrown an exception", params), e);
         }
-        return null;
     };
 
     private Executable getAll = (params) -> {
         try {
             return wrap(userService.getAll());
         } catch (Exception e) {
-            // TODO add code
+            throw new ApplicationException(String.format("Action getAll with params (%s) has thrown an exception", params), e);
         }
-        return null;
     };
 
     private Executable deleteById = (params) -> {
@@ -82,9 +84,8 @@ public class UserController extends AbstractController {
             userService.deleteById(id);
             return null;
         } catch (Exception e) {
-            // TODO add code
+            throw new ApplicationException(String.format("Action deleteBuId with params (%s) has thrown an exception", params), e);
         }
-        return null;
     };
 
     private String wrap(Object object) {

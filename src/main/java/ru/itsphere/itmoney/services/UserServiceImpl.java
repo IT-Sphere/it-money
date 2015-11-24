@@ -2,6 +2,8 @@ package ru.itsphere.itmoney.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.itsphere.itmoney.dao.DAOException;
 import ru.itsphere.itmoney.dao.UserDAO;
 import ru.itsphere.itmoney.domain.User;
@@ -15,12 +17,14 @@ import java.util.List;
  *
  * @author Budnikov Aleksandr
  */
+@Service
 public class UserServiceImpl implements UserService {
     /**
      * Подключили логгер к текущему классу
      */
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
+    @Autowired
     private UserDAO userDAO;
 
     public User getById(int id) {
@@ -36,7 +40,7 @@ public class UserServiceImpl implements UserService {
         try {
             userDAO.save(user);
         } catch (Exception e) {
-            // TODO add code
+            throw new ServiceException("User isn't create", e);
         }
     }
 
@@ -45,7 +49,7 @@ public class UserServiceImpl implements UserService {
         try {
             userDAO.update(user);
         } catch (Exception e) {
-            // TODO add code
+            throw new ServiceException("User isn't update", e);
         }
     }
 
@@ -54,9 +58,8 @@ public class UserServiceImpl implements UserService {
         try {
             return userDAO.getAll();
         } catch (Exception e) {
-            // TODO add code
+            throw new ServiceException("Users aren't getting", e);
         }
-        return null;
     }
 
     @Override
@@ -64,7 +67,7 @@ public class UserServiceImpl implements UserService {
         try {
             userDAO.deleteById(id);
         } catch (Exception e) {
-            // TODO add code
+            throw new ServiceException(String.format("Deleting user by id %s", id), e);
         }
     }
 
