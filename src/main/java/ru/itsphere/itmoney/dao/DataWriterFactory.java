@@ -1,5 +1,6 @@
 package ru.itsphere.itmoney.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,15 +17,13 @@ import java.io.PrintWriter;
 @Component
 public class DataWriterFactory implements WriterFactory {
 
-    public static final String CHARSET_NAME = "UTF-8";
-
-    @Value("${data.access.file}")
-    private String FILE_NAME;
+    @Autowired
+    private FileProperties fileProperties;
 
     @Override
     public PrintWriter getPrintWriter(boolean append) throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(FILE_NAME, append);
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, CHARSET_NAME);
+        FileOutputStream fileOutputStream = new FileOutputStream(fileProperties.getFileName(), append);
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream, fileProperties.getCharset());
         return new PrintWriter(outputStreamWriter);
     }
 }
