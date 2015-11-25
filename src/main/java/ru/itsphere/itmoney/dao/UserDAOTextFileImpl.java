@@ -205,27 +205,23 @@ public class UserDAOTextFileImpl implements UserDAO {
 
     @Override
     public List<User> findUsersByQuery(String query) {
-        Pattern pattern = Pattern.compile(query);
-        Matcher matcher;
         List<User> users = new ArrayList<>();
+        Pattern pattern = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
+        Matcher matcher;
         try {
             List<String> lines = getLinesOfFile();
             ListIterator<String> iterator = lines.listIterator(1);
             while (iterator.hasNext()) {
                 String line = iterator.next();
                 matcher = pattern.matcher(line);
-                if (matcher.matches()) {
+                if (matcher.find()) {
                     users.add(convertToUser(line));
                 }
             }
-            if (!users.isEmpty()) {
-                return users;
-            }
-
         } catch (Exception e) {
             throw new DAOException(String.format("Find users bu query %s", query), e);
         }
-        return null;
+        return users;
     }
 
     private List<String> deleteUserFromList(int id, List<String> lines) {

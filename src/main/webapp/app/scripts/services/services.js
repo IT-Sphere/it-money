@@ -34,7 +34,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
                 controller: "USER",
                 action: 'FIND_USERS_BY_QUERY',
                 params: {query: query}
-            })success(function (response) {
+            }).success(function (response) {
                 ErrorHandler(response, successCallback);
             });
         },
