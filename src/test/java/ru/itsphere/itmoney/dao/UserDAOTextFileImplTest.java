@@ -119,6 +119,19 @@ public class UserDAOTextFileImplTest {
     }
 
     @Test
+    public void testGetCountSuccessfully() {
+        int count = userDAO.getCount();
+        Assert.assertEquals(lines.size()-1,count);
+    }
+
+    @Test
+    public void testGetCountEmpty() {
+        lines.clear();
+        int count = userDAO.getCount();
+
+    }
+
+    @Test
     public void testDeleteByIdSuccessfully() {
         int id = USER_1_ID;
         userDAO.deleteById(id);

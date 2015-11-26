@@ -86,7 +86,7 @@ public class UserDAOTextFileImpl implements UserDAO {
                 writeUserToFileEndWithNewId(user, lastUserId + 1);
             }
         } catch (Exception e) {
-            throw new DAOException("User isn't creating", e);
+            throw new DAOException(String.format("save user %s", user), e);
         }
     }
 
@@ -101,7 +101,7 @@ public class UserDAOTextFileImpl implements UserDAO {
             List<String> lines = replaceWithNewData(user, getLinesOfFile());
             updateFile(lines);
         } catch (Exception e) {
-            throw new DAOException("User isn't update", e);
+            throw new DAOException(String.format("update user %s", user), e);
         }
     }
 
@@ -223,6 +223,21 @@ public class UserDAOTextFileImpl implements UserDAO {
             throw new DAOException(String.format("Find users bu query %s", query), e);
         }
         return users;
+    }
+
+    @Override
+    public int getCount() {
+        int count = 0;
+        try {
+            List<String> lines = getLinesOfFile();
+            if (lines.size() <= 1) {
+                return count;
+            }
+            count = lines.size() - 1;
+            return count;
+        } catch (Exception e) {
+            throw new DAOException("getCount", e);
+        }
     }
 
     private List<String> deleteUserFromList(int id, List<String> lines) {

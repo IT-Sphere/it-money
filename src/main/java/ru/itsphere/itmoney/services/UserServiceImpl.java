@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         try {
             userDAO.save(user);
         } catch (Exception e) {
-            throw new ServiceException("User isn't create", e);
+            throw new ServiceException(String.format("Save user %s", user), e);
         }
     }
 
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         try {
             userDAO.update(user);
         } catch (Exception e) {
-            throw new ServiceException("User isn't update", e);
+            throw new ServiceException(String.format("Update user %s", user), e);
         }
     }
 
@@ -74,9 +74,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public int getCount() {
         try {
-            return userDAO.getAll().size();
-        }
-        catch (Exception e) {
+            return userDAO.getCount();
+        } catch (Exception e) {
             throw new ServiceException("Problem in getCount", e);
         }
     }
@@ -85,9 +84,8 @@ public class UserServiceImpl implements UserService {
     public List<User> findUsersByQuery(String query) {
         try {
             return userDAO.findUsersByQuery(query);
-        }
-        catch (Exception e) {
-            throw new ServiceException("Problem in findUsersByQuery", e);
+        } catch (Exception e) {
+            throw new ServiceException(String.format("findUsersByQuery user by query %s", query), e);
         }
     }
 

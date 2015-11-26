@@ -54,4 +54,9 @@ public interface UserDAO {
      * @return Users которые соответсвуют запросу
      */
     List<User> findUsersByQuery(String query);
+
+    /**
+     * @return count of Users
+     */
+    int getCount();
 }
