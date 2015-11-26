@@ -1,8 +1,5 @@
 package ru.itsphere.itmoney.servlets;
 
-import ru.itsphere.itmoney.controllers.Actions;
-import ru.itsphere.itmoney.controllers.Controllers;
-
 import java.util.Map;
 
 /**
@@ -27,8 +24,8 @@ public class ClientRequest {
         return action;
     }
 
-    public Controllers getController() {
-        return Controllers.valueOf(controller);
+    public String getController() {
+        return controller;
     }
 
     public Map<String, String> getParams() {

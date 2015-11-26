@@ -18,12 +18,4 @@
 
     <context:property-placeholder location="classpath:configurations.properties" />
 
-    <bean id="controllerResolver" class="ru.itsphere.itmoney.servlets.ControllerResolver">
-        <property name="controllers">
-            <map>
-                <entry key="USER" value-ref="userController"/>
-            </map>
-        </property>
-    </bean>
-
 </beans>

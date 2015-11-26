@@ -2,13 +2,18 @@ package ru.itsphere.itmoney.config;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.WebApplicationInitializer;
+import ru.itsphere.itmoney.controllers.AbstractController;
 import ru.itsphere.itmoney.servlets.ControllerResolver;
 import ru.itsphere.itmoney.servlets.DispatcherServlet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Этот класс инициализирует приложение
@@ -25,8 +30,20 @@ public class ApplicationInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext container) throws ServletException {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(CONTEXT_XML);
-        ControllerResolver controllerResolver = (ControllerResolver) applicationContext.getBean(CONTROLLER_RESOLVER);
+        ControllerResolver controllerResolver = getControllerResolver(applicationContext);
         registerDispatcherServlet(container, controllerResolver);
+    }
+
+    private ControllerResolver getControllerResolver(ApplicationContext applicationContext) {
+        Map<String, Object> controllersTemp = applicationContext.getBeansWithAnnotation(Controller.class);
+        Map<String, AbstractController> controllers = new HashMap<>();
+        Set<String> setTemp= controllersTemp.keySet();
+        for (String key : setTemp) {
+            controllers.put(key,(AbstractController) controllersTemp.get(key));
+        }
+        ControllerResolver controllerResolver = new ControllerResolver();
+        controllerResolver.setControllers(controllers);
+        return controllerResolver;
     }
 
     /**

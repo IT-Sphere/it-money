@@ -2,9 +2,8 @@ package ru.itsphere.itmoney.servlets;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 import ru.itsphere.itmoney.controllers.AbstractController;
-import ru.itsphere.itmoney.controllers.Controllers;
-import ru.itsphere.itmoney.controllers.UserController;
 
 import java.util.Map;
 
@@ -15,13 +14,14 @@ import java.util.Map;
  *
  * @author Budnikov Aleksandr
  */
+@Component
 public class ControllerResolver {
     /**
      * Подключили логгер к текущему классу
      */
     private static final Logger logger = LogManager.getLogger(ControllerResolver.class);
 
-    private Map<Controllers, AbstractController> controllers;
+    private Map<String, AbstractController> controllers;
 
     public AbstractController getController(ClientRequest clientRequest) {
         AbstractController controller = controllers.get(clientRequest.getController());
@@ -32,7 +32,7 @@ public class ControllerResolver {
         return controller;
     }
 
-    public void setControllers(Map<Controllers, AbstractController> controllers) {
+    public void setControllers(Map<String, AbstractController> controllers) {
         this.controllers = controllers;
     }
 }

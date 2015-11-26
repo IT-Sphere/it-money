@@ -11,7 +11,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
     return {
         get: function (id, successCallback) {
             return $http.post(Config.appName, {
-                controller: "USER",
+                controller: "userController",
                 action: 'getById',
                 params: {id: id}
             }).success(function (response) {
@@ -21,7 +21,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
 
         delete: function (id, successCallback) {
             return $http.post(Config.appName, {
-                controller: "USER",
+                controller: "userController",
                 action: 'deleteById',
                 params: {id: id}
             }).success(function (response) {
@@ -31,7 +31,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
 
         findUsersByQuery: function (query, successCallback) {
             return $http.post(Config.appName, {
-                controller: "USER",
+                controller: "userController",
                 action: 'findUsersByQuery',
                 params: {query: query}
             }).success(function (response) {
@@ -41,7 +41,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
 
         save: function (user, successCallback) {
             return $http.post(Config.appName, {
-                controller: "USER",
+                controller: "userController",
                 action: 'save',
                 params: user
             }).success(function (response) {
@@ -50,14 +50,14 @@ services.factory('User', function ($http, Config, ErrorHandler) {
         },
 
         getAll: function (successCallback) {
-            return $http.post(Config.appName, {controller: "USER", action: 'getAll'}).success(function (response) {
+            return $http.post(Config.appName, {controller: "userController", action: 'getAll'}).success(function (response) {
                 ErrorHandler(response, successCallback);
             });
         },
 
         getCount: function (successCallback) {
             return $http.post(Config.appName, {
-                controller: "USER",
+                controller: "userController",
                 action: 'getCount'
             }).success(function (response) {
                 ErrorHandler(response, successCallback);
