@@ -21,10 +21,10 @@ public class ControllerResolver {
      */
     private static final Logger logger = LogManager.getLogger(ControllerResolver.class);
 
-    private Map<String, AbstractController> controllers;
+    private Map<String, Object> controllers;
 
     public AbstractController getController(ClientRequest clientRequest) {
-        AbstractController controller = controllers.get(clientRequest.getController());
+        AbstractController controller = (AbstractController) controllers.get(clientRequest.getController());
         if (controller == null) {
             logger.fatal("Controller {} wasn't registered", clientRequest.getController());
             throw new RuntimeException("Controller '" + clientRequest.getController() + "' wasn't registered");
@@ -32,7 +32,7 @@ public class ControllerResolver {
         return controller;
     }
 
-    public void setControllers(Map<String, AbstractController> controllers) {
+    public void setControllers(Map<String, Object> controllers) {
         this.controllers = controllers;
     }
 }

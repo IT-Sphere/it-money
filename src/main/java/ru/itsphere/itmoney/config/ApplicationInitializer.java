@@ -35,13 +35,8 @@ public class ApplicationInitializer implements WebApplicationInitializer {
     }
 
     private ControllerResolver getControllerResolver(ApplicationContext applicationContext) {
-        Map<String, Object> controllersTemp = applicationContext.getBeansWithAnnotation(Controller.class);
-        Map<String, AbstractController> controllers = new HashMap<>();
-        Set<String> setTemp= controllersTemp.keySet();
-        for (String key : setTemp) {
-            controllers.put(key,(AbstractController) controllersTemp.get(key));
-        }
-        ControllerResolver controllerResolver = new ControllerResolver();
+        Map<String, Object> controllers = applicationContext.getBeansWithAnnotation(Controller.class);
+        ControllerResolver controllerResolver = (ControllerResolver) applicationContext.getBean(CONTROLLER_RESOLVER);
         controllerResolver.setControllers(controllers);
         return controllerResolver;
     }
