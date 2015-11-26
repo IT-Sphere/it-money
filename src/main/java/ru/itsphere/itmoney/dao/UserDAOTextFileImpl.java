@@ -205,8 +205,9 @@ public class UserDAOTextFileImpl implements UserDAO {
 
     @Override
     public List<User> findUsersByQuery(String query) {
+        final int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
         List<User> users = new ArrayList<>();
-        Pattern pattern = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile(query, flags);
         Matcher matcher;
         try {
             List<String> lines = getLinesOfFile();

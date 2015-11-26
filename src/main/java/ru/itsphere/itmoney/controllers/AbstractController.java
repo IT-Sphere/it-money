@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import ru.itsphere.itmoney.servlets.ClientRequest;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -31,13 +32,21 @@ public abstract class AbstractController {
         // Логируем входные параметры запроса
         logger.entry(clientRequest);
         try {
-            Executable handler = getHandlers().get(clientRequest.getAction());
-            Serializable result = handler.execute(clientRequest.getParams());
+            // Получили имя метода в контроллере
+            String methodName = clientRequest.getAction();
+            // this.getClass() - объект-класс текущего контроллера (UserController).
+            // Получили метод этого контроллера
+            Method methodAction = this.getClass().getDeclaredMethod(methodName, Map.class);
+            // Выполнили этот метод и получили результат
+            Serializable result = (Serializable) methodAction.invoke(this, clientRequest.getParams());
             // Логируем ответ сервера клиенту
             return logger.exit(ResponseCreator.process(result));
         } catch (ApplicationException e) {
-            logger.error("Client request %s has thrown an exception" , clientRequest, e);
+            logger.error("Client request %s has thrown an exception", clientRequest, e);
             // Логируем ответ сервера клиенту
+            return logger.exit(ResponseCreator.processError(e));
+        } catch (Exception e) {
+            logger.fatal("Client request %s has thrown an exception" , clientRequest, e);
             return logger.exit(ResponseCreator.processError(e));
         }
     }
@@ -47,5 +56,4 @@ public abstract class AbstractController {
      *
      * @return все доступные обработчики
      */
-    protected abstract Map<Actions, Executable> getHandlers();
 }

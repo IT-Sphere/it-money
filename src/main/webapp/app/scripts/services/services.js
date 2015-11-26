@@ -12,7 +12,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
         get: function (id, successCallback) {
             return $http.post(Config.appName, {
                 controller: "USER",
-                action: 'GET_BY_ID',
+                action: 'getById',
                 params: {id: id}
             }).success(function (response) {
                 ErrorHandler(response, successCallback);
@@ -22,7 +22,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
         delete: function (id, successCallback) {
             return $http.post(Config.appName, {
                 controller: "USER",
-                action: 'DELETE_BY_ID',
+                action: 'deleteById',
                 params: {id: id}
             }).success(function (response) {
                 ErrorHandler(response, successCallback);
@@ -32,7 +32,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
         findUsersByQuery: function (query, successCallback) {
             return $http.post(Config.appName, {
                 controller: "USER",
-                action: 'FIND_USERS_BY_QUERY',
+                action: 'findUsersByQuery',
                 params: {query: query}
             }).success(function (response) {
                 ErrorHandler(response, successCallback);
@@ -42,7 +42,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
         save: function (user, successCallback) {
             return $http.post(Config.appName, {
                 controller: "USER",
-                action: 'SAVE',
+                action: 'save',
                 params: user
             }).success(function (response) {
                 ErrorHandler(response, successCallback);
@@ -50,7 +50,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
         },
 
         getAll: function (successCallback) {
-            return $http.post(Config.appName, {controller: "USER", action: 'GET_ALL'}).success(function (response) {
+            return $http.post(Config.appName, {controller: "USER", action: 'getAll'}).success(function (response) {
                 ErrorHandler(response, successCallback);
             });
         },
@@ -58,7 +58,7 @@ services.factory('User', function ($http, Config, ErrorHandler) {
         getCount: function (successCallback) {
             return $http.post(Config.appName, {
                 controller: "USER",
-                action: 'GET_COUNT'
+                action: 'getCount'
             }).success(function (response) {
                 ErrorHandler(response, successCallback);
             });

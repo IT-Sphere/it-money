@@ -23,8 +23,8 @@ public class ClientRequest {
         this.params = params;
     }
 
-    public Actions getAction() {
-        return Actions.valueOf(action);
+    public String getAction() {
+        return action;
     }
 
     public Controllers getController() {

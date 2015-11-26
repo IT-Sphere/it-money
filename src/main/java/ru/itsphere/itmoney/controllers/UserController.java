@@ -9,7 +9,9 @@ import ru.itsphere.itmoney.domain.User;
 import ru.itsphere.itmoney.services.ServiceException;
 import ru.itsphere.itmoney.services.UserService;
 
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,22 +30,11 @@ public class UserController extends AbstractController {
 
     @Autowired
     private UserService userService;
-    private Map<Actions, Executable> handlers;
 
-    public UserController() {
-        handlers = new HashMap<>();
-        handlers.put(Actions.GET_BY_ID, getById);
-        handlers.put(Actions.SAVE, save);
-        handlers.put(Actions.GET_ALL, getAll);
-        handlers.put(Actions.DELETE_BY_ID, deleteById);
-        handlers.put(Actions.GET_COUNT, getCount);
-        handlers.put(Actions.FIND_USERS_BY_QUERY,findUsersByQuery);
-    }
-
-    private Executable getById = (params) -> {
+    public Serializable getById(Map<String, String> params) {
         try {
             if (params.get("id") == null) {
-                logger.warn("Action {} incoming param id is null", Actions.GET_BY_ID);
+                logger.warn("Action {} incoming param id is null", "getById");
                 return null;
             }
             int id = Integer.parseInt(params.get("id"));
@@ -52,43 +43,12 @@ public class UserController extends AbstractController {
         } catch (ServiceException e) {
             throw new ApplicationException(String.format("Action getById with params (%s) has thrown an exception", params), e);
         }
-    };
+    }
 
-    private Executable save = (params) -> {
-        try {
-            User newUser = convertMapToUser(params);
-            if (params.get("id") == null) {
-                userService.save(newUser);
-                return wrap(newUser);
-            } else {
-                userService.update(newUser);
-                return wrap(newUser);
-            }
-        } catch (Exception e) {
-            throw new ApplicationException(String.format("Action save with params (%s) has thrown an exception", params), e);
-        }
-    };
-
-    private Executable getAll = (params) -> {
-        try {
-            return wrap(userService.getAll());
-        } catch (Exception e) {
-            throw new ApplicationException(String.format("Action getAll with params (%s) has thrown an exception", params), e);
-        }
-    };
-
-    private Executable findUsersByQuery = (params) -> {
-        try {
-            String query = String.valueOf(params.get("query"));
-            return wrap(userService.findUsersByQuery(query));
-        } catch (Exception e) {
-            throw new ApplicationException(String.format("Action getAll with params (%s) has thrown an exception", params), e);
-        }
-    };
-
-    private Executable deleteById = (params) -> {
+    public Serializable deleteById(Map<String, String> params) {
         try {
             if (params.get("id") == null) {
+                logger.warn("Action {} incoming param id is null", "deleteById");
                 return null;
             }
             int id = Integer.parseInt(params.get("id"));
@@ -97,15 +57,47 @@ public class UserController extends AbstractController {
         } catch (Exception e) {
             throw new ApplicationException(String.format("Action deleteBuId with params (%s) has thrown an exception", params), e);
         }
-    };
+    }
 
-    private Executable getCount = (params) -> {
+    public Serializable findUsersByQuery(Map<String, String> params) {
+        try {
+            String query = params.get("query");
+            return wrap(userService.findUsersByQuery(query));
+        } catch (ServiceException e) {
+            throw new ApplicationException(String.format("Action findUsersByQuery with params (%s) has thrown an exception", params), e);
+        }
+    }
+
+    public Serializable save(Map<String, String> params) {
+        try {
+            User newUser = convertMapToUser(params);
+            if (params.get("id") == null) {
+                userService.save(newUser);
+                return null;
+            } else {
+                userService.update(newUser);
+                return wrap(newUser);
+            }
+        } catch (ServiceException e) {
+            throw new ApplicationException(String.format("Action save with params (%s) has thrown an exception", params), e);
+        }
+    }
+
+    public Serializable getAll(Map<String, String> params) {
+        try {
+            return wrap(userService.getAll());
+        } catch (ServiceException e) {
+            throw new ApplicationException(String.format("Action getAll with params (%s) has thrown an exception", params), e);
+        }
+    }
+
+    public Serializable getCount(Map<String, String> params) {
         try {
             return wrap(userService.getCount());
         } catch (Exception e) {
             throw new ApplicationException(String.format("Action getCount with params (%s) has thrown an exception", params), e);
         }
-    };
+    }
 
     private String wrap(Object object) {
         return new Gson().toJson(object);
@@ -118,11 +110,6 @@ public class UserController extends AbstractController {
         }
         int id = Integer.parseInt(params.get("id"));
         return new User(id, name);
-    }
-
-    @Override
-    public Map<Actions, Executable> getHandlers() {
-        return this.handlers;
     }
 
     public void setUserService(UserService userService) {
