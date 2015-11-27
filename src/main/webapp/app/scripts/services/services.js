@@ -50,7 +50,10 @@ services.factory('User', function ($http, Config, ErrorHandler) {
         },
 
         getAll: function (successCallback) {
-            return $http.post(Config.appName, {controller: "userController", action: 'getAll'}).success(function (response) {
+            return $http.post(Config.appName, {
+                controller: "userController",
+                action: 'getAll'
+            }).success(function (response) {
                 ErrorHandler(response, successCallback);
             });
         },

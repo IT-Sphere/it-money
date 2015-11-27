@@ -103,11 +103,12 @@ public class UserServiceImplTest {
         Assert.assertEquals(allUsers.size(), count);
     }
 
+    @Test
     public void testGetCountEmpty() {
         List<User> users = new ArrayList<>();
         when(userDAO.getCount()).thenReturn(users.size());
         int count = userService.getCount();
-        Assert.assertEquals(allUsers.size(), count);
+        Assert.assertEquals(users.size(), count);
     }
 
     @Test
